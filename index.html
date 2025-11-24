@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossier | West Vespucci Kings</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #121212;
+            color: #E0E0E0;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            scroll-snap-type: y mandatory;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .page-container {
+            min-height: 100vh; 
+            width: 100%;
+            display: flex;
+            align-items: center; 
+            justify-content: center;
+            scroll-snap-align: start; 
+        }
+
+        .dossier-card {
+            max-width: 900px;
+            width: 85%;
+            box-sizing: border-box;
+            background-color: #1E1E1E;
+            padding: 40px 60px;
+            margin: 20px auto;
+            border: 3px solid #9400D3; /* Changé en mauve */
+            box-shadow: 0 0 15px rgba(148, 0, 211, 0.4); /* Changé en mauve */
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid #9400D3; /* Changé en mauve */
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-family: 'Arial', sans-serif;
+            color: #E0E0E0;
+            font-size: 2.5em;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 5px #9400D3; /* Changé en mauve */
+        }
+
+        h2 {
+            font-family: 'Arial', sans-serif;
+            color: #9400D3; /* Changé en mauve */
+            border-bottom: 1px solid #9400D3; /* Changé en mauve */
+            padding-bottom: 5px;
+            margin-top: 20px;
+            font-size: 1.8em;
+            text-transform: uppercase;
+        }
+        
+        h3 {
+            font-family: 'Arial', sans-serif;
+            color: #E0E0E0;
+            margin-top: 20px;
+            font-size: 1.2em;
+            text-transform: uppercase;
+        }
+
+        .placeholder {
+            border: 1px dashed #9400D3; /* Changé en mauve */
+            padding: 15px;
+            margin: 15px 0;
+            background-color: #121212;
+            text-align: left;
+            font-style: italic;
+            color: #a0a0a0;
+        }
+        
+        .placeholder.inline {
+             display: inline-block;
+             width: auto;
+             padding: 5px 10px;
+             margin: 0 5px;
+             text-align: center;
+        }
+
+        .map-container {
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px solid #9400D3; /* Changé en mauve */
+            background-color: #121212;
+            text-align: center;
+        }
+        
+        .map-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .devise {
+            font-style: italic;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        
+        .rp-highlight {
+            font-weight: bold;
+            color: #9400D3; /* Changé en mauve */
+        }
+
+        .list-style {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .list-style li {
+            padding-left: 1.5em;
+            position: relative;
+        }
+        
+        .list-style li:before {
+            content: ">>"; 
+            color: #9400D3; /* Changé en mauve */
+            position: absolute;
+            left: 0;
+            font-size: 1em;
+        }
+
+        #page-intro .dossier-card {
+             height: 80vh; 
+             display: flex;
+             flex-direction: column; 
+             justify-content: center;
+             text-align: center;
+        }
+        
+        #page-footer {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #9400D3; /* Changé en mauve */
+            font-size: 0.8em;
+            margin-top: 40px;
+        }
+
+        #back-to-top-btn {
+            opacity: 0;
+            visibility: hidden;
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            z-index: 100;
+            background-color: #1E1E1E;
+            color: #E0E0E0;
+            border: 2px solid #9400D3; /* Changé en mauve */
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(148, 0, 211, 0.5); /* Changé en mauve */
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s, opacity 0.4s, visibility 0.4s;
+        }
+
+        #back-to-top-btn:hover {
+            background-color: #9400D3; /* Changé en mauve */
+            color: #1E1E1E;
+        }
+
+        #back-to-top-btn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .members-table {
+            width: 100%;
+            margin-top: 25px;
+            border-collapse: collapse;
+            color: #E0E0E0;
+        }
+
+        .members-table th, .members-table td {
+            border: 1px solid #9400D3; /* Changé en mauve */
+            padding: 12px;
+            text-align: left;
+        }
+
+        .members-table th {
+            background-color: #9400D3; /* Changé en mauve */
+            color: #1E1E1E;
+            text-transform: uppercase;
+            font-family: 'Arial', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .status-active {
+            color: #4CAF50; /* Vert */
+            font-weight: bold;
+        }
+
+        .status-mia {
+            color: #FFC107; /* Jaune/Ambre */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="page-container" id="page-intro">
+        <div class="dossier-card">
+            <header>
+                <h1>WEST VESPUCCI KINGS</h1>
+            
+            <p style="font-size: 1.1em; margin-top: 50px;">
+                Dossier présentant la vision et les objectifs des West Vespucci Kings.
+            </p>
+
+            <div style="margin-top: 50px; text-align: center;">
+                <p>Rédacteur : <span class="placeholder inline">WVK Leadership</span></p>
+                <p>Date d'émission : <span class="placeholder inline">[ 2025-11-24 ]</span></p>
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="page-container">
+        <div class="dossier-card">
+            <h2>1. NOS AMBITIONS</h2>
+            
+            <ul class="list-style">
+                <li><span class="rp-highlight">1️⃣ Protéger et contrôler</span> la West Side de Vespucci.</li>
+                <li><span class="rp-highlight">2️⃣ Construire un business</span> propre, rentable, durable.</li>
+                <li><span class="rp-highlight">3️⃣ Faire des WVK</span> une vraie famille, pas juste un crew.</li>
+                <li><span class="rp-highlight">4️⃣ Imposer le</span> “respect Vespucci”.</li>
+                <li><span class="rp-highlight">5️⃣ Devenir un point de passage</span> incontournable pour la côte Ouest.</li>
+                <li><span class="rp-highlight">6️⃣ Établir une paix solide…</span> mais jamais passive.</li>
+                <li><span class="rp-highlight">7️⃣ Préparer la prochaine</span> génération de Kings.</li>
+            </ul>
+
+            <p><strong>Carte du lieu de vie :</strong></p>
+            <div class="map-container">
+                <img src="https://cdn.discordapp.com/attachments/1428874273451151473/1442595195429458052/Capture_decran_2025-11-24_141436.png?ex=692600f8&is=6924af78&hm=8180abfa8a4a3116b478825d82a10666549238fe6de2c17b790dda4c14f66a13&" alt="Carte du lieu de résidence souhaitée">
+            </div>
+            
+        </div>
+    </div>
+
+    <div class="page-container">
+        <div class="dossier-card">
+            <h2>2. LORE – ORIGINES</h2>
+            
+            <h3>L'envers du décor de Vespucci</h3>
+            <p>
+                À Vespucci, tout le monde voit la plage, les palmiers, les skateurs, les touristes.
+                Personne ne regarde vraiment l’envers du décor : les petites ruelles derrière les immeubles colorés, les garages abandonnés, les maisons divisées en logements cheap, les deals silencieux faits sous les escaliers.
+            </p>
+
+            <h3>Les Frères Bishop</h3>
+            <p>
+                C’est dans cet environnement ambigu — moitié carte postale, moitié survie — qu’ont grandi les frères Bishop : Lamar & Jamal.
+                Élevés par une mère seule dans un petit appartement de Bay City Avenue, ils passent leur enfance entre le skatepark, les mini-marchés tenus par des familles immigrées, et les coins où les anciens tenaient encore la rue.
+            </p>
+
+            <h3>La Naissance des "Kings"</h3>
+            <p>
+                Ils n’étaient pas nés pour être des rois. Mais Los Santos les a forcés à le devenir.
+                Le surnom “Kings” ne vient pas d’un délire d’ego. Ce sont les anciens du quartier qui leur ont donné ce titre, presque ironiquement au début.
+            </p>
+            <div class="placeholder">
+                « Les gamins de Vespucci veulent régner sur un endroit que les touristes volent chaque été. S’ils y arrivent… alors ouais, ce seront les Kings. »
+            </div>
+            <p>Le surnom est resté. Et ils l’ont revendiqué.</p>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <div class="dossier-card">
+            <h2>3. Style Vestimentaire WVK</h2>
+            
+            <h3>OG's</h3>
+            <p>
+            Couleurs : violet profond + noir + touches de blanc ou gris</p>
+
+
+            </p>Hauts : hoodies ou sweats violets ou noirs, coupe premium, manches longues</p>
+
+
+            </p>Vestes : bomber ou veste en jean noire avec bandes violettes sur les manches ou sur les épaules</p>
+
+
+            </p>Bas : jeans noirs ou gris foncé, coupe droite, ou pantalons cargo pour RP action</p>
+
+
+            </p>Chaussures : sneakers noires ou violettes, sobres mais reconnaissables</p>
+
+
+            </p>Accessoires : bandana violet autour du poignet ou du cou, casquette plate noire ou violette, chaînes fines argentées</p>
+
+
+            </p>Style général : mature, imposant, identifiable par la couleur et la coupe</p>
+            
+            <h3>Membres</h3>
+            <p>
+            Couleurs : violet profond + noir + touches de blanc ou gris</p>
+
+
+            </p>Hauts : hoodies violets ou noirs, T-shirts amples violets ou gris</p>
+
+
+            </p>Bas : jeans ou cargos noirs / gris, joggers streetwear</p>
+
+
+            </p>Chaussures : sneakers noires, blanches ou avec un détail violet</p>
+
+
+            </p>Accessoires : bandanas violets portés discrètement (poignet, poche arrière, cou), casquettes simples noires ou violettes</p>
+
+
+            </p>Style général : street, pratique, identifiable par la couleur et les touches violettes</p>
+
+        </div>
+    </div>
+    <div class="page-container">
+        <div class="dossier-card">
+            <h2>4. Armement des West Vespucci Kings</h2>
+            <p>Voici la section armement des WVK.</p>
+
+            <h3></h3>
+            <div class="placeholder">
+                [ Les West Vespucci Kings privilégient un armement discret mais efficace. ]
+            </div>
+            
+            <h3></h3>
+            <div class="placeholder">
+                [ Le gang utilise principalement des armes de poing fiables comme les Beretta et les Glock 17, parfaites pour les opérations du quotidien. ]
+            </div>
+            
+            <h3></h3>
+            <div class="placeholder">
+                [ Pour les actions nécessitant plus de puissance de feu, les membres peuvent avoir recours au TEC‑9, arme automatique compacte et redoutée dans la rue. ]
+            </div>
+
+            <h3></h3>
+            <div class="placeholder">
+                [ Enfin, une AK circule exclusivement entre les mains des OG, utilisée uniquement lors de situations exceptionnelles où le gang doit réellement montrer sa force. ]
+            </div>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <div class="dossier-card">
+            <h2>5. IMPACT EXEMPLE</h2>
+
+            <h3>Points sur l'impact</h3>
+            <ul class="list-style">
+                <li><span class="rp-highlight">Impact exemple 1 :</span> Description du premier impact exemple.</li>
+                <li><span class="rp-highlight">Impact exemple 2 :</span> Description du deuxième impact exemple.</li>
+                <li><span class="rp-highlight">Impact exemple 3 :</span> Description du troisième impact exemple.</li>
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="page-container">
+        <div class="dossier-card">
+            <h2>MEMBRES WVK</h2>
+            <p>Ceci est une liste des membres du groupe.</p>
+            <table class="members-table">
+                <thead>
+                    <tr>
+                        <th>Nom / Alias</th>
+                        <th>Rang</th>
+                        <th>Statut</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ice | Lamar Bishop</td>
+                        <td>OG'S</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>Snow | Jamal Bishop</td>
+                        <td>Bras droit du OG'S</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>Smoke | Malik Carter</td>
+                        <td>Bras droit du OG'S</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>Blaze | Ryder Brooks</td>
+                        <td>Membres</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>Switch | Asriel Skywalker</td>
+                        <td>Membres</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td> | Dante Freeman</td>
+                        <td>Exemple</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>Surnom | Nom Prénom</td>
+                        <td>Exemple</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>Surnom | Nom Prénom</td>
+                        <td>Exemple</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>Surnom | Nom Prénom</td>
+                        <td>Exemple</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>Surnom | Nom Prénom</td>
+                        <td>Exemple</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>Surnom | Nom Prénom</td>
+                        <td>Exemple</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                    <tr>
+                        <td>Surnom | Nom Prénom</td>
+                        <td>Exemple</td>
+                        <td><span class="status-active">Actif</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <div class="dossier-card">
+            <h2>6. CONCLUSION</h2>
+
+            <h3>Remarques finales</h3>
+            <ul class="list-style">
+                <li><span class="rp-highlight">Ceci est un texte d'exemple pour la conclusion du dossier.</span></li>
+            </ul>
+            
+            <div id="page-footer">
+                Dossier <span class="rp-highlight">West Vespucci Kings</span> | <span class="rp-highlight">Respect Vespucci</span>
+            </div>
+        </div> 
+    </div>
+
+    <a href="#page-intro" id="back-to-top-btn" title="Retourner en haut">↑</a>
+
+    <script>
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                if (['c', 'v', 'x', 'u', 's'].includes(e.key.toLowerCase())) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+        const backToTopButton = document.getElementById("back-to-top-btn");
+
+        document.addEventListener('scroll', () => {
+            if (document.documentElement.scrollTop > 100) {
+                backToTopButton.classList.add("show");
+            } else {
+                backToTopButton.classList.remove("show");
+            }
+        });
+    </script>
+</body>
+
+</html>
